@@ -92,6 +92,7 @@ pip freeze > requirements.txt
 ### Create .gitignore file
 
 Add to .gitignore
+
 ```shell
 # .conda
 .conda/
@@ -103,5 +104,8 @@ secrets.toml
 ```shell
 git init
 git add .
-
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/BenZHONG/interview-tool.git
+git push -u origin main
 ```
