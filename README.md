@@ -101,6 +101,8 @@ Add to .gitignore
 secrets.toml
 ```
 
+### Using git
+
 ```shell
 git init
 git add .
@@ -109,3 +111,7 @@ git branch -M main
 git remote add origin https://github.com/BenZHONG/interview-tool.git
 git push -u origin main
 ```
+
+## Deploying the Streamlit App
+
+[https://share.streamlit.io/](https://share.streamlit.io/)
