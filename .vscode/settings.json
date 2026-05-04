@@ -1,40 +1,65 @@
 {
-    "editor.fontSize": 20,
-    "python.defaultInterpreterPath": "${env:CONDA_PREFIX}\\python.exe",
-    "python.condaPath": "C:\\Users\\zhili\\anaconda3\\Scripts\\conda.exe", // 确认此路径正确
+    // --- 1. Python 环境与解析 ---
     "python.terminal.activateEnvironment": true,
     "python.terminal.activateEnvInCurrentTerminal": true,
-    // 修正终端配置（适配大多数 Windows 环境的 Conda）
-    "terminal.integrated.profiles.windows": {
-        "PowerShell": {
-            "source": "PowerShell",
-            "args": [
-                "-ExecutionPolicy",
-                "ByPass",
-                "-NoExit",
-                "-Command",
-                "& '${env:USERPROFILE}\\miniconda3\\Scripts\\Activate.ps1'",
-                "; conda activate '${env:CONDA_PREFIX}'"
-            ]
-        },
-        "Command Prompt": {
-            "path": [
-                "${env:windir}\\Sysnative\\cmd.exe",
-                "${env:windir}\\System32\\cmd.exe"
-            ],
-            "args": [
-                "/k",
-                "C:\\Users\\zhili\\miniconda3\\Scripts\\activate.bat",
-                "${env:CONDA_PREFIX}"
-            ]
+    "python.languageServer": "Pylance",
+    // --- 2. Pylance 智能提示与静态检查 ---
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.diagnosticMode": "workspace",
+    // 内联提示：仅在必要时显示，避免干扰视线
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.variableTypes": false, // 变量类型提示通常太吵，建议设为 false
+    // --- 3. Ruff 代码检查与格式化 (核心) ---
+    "ruff.enable": true,
+    "ruff.organizeImports": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.columnSelection": false,
+        "editor.autoClosingBrackets": "always",
+        "editor.codeActionsOnSave": {
+            // 合并后的触发操作：修复错误 + 排序导包
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
         }
     },
-    "terminal.integrated.defaultProfile.windows": "Command Prompt", // 推荐先用 cmd 测试
-    // 其他保持不变
-    "files.autoSave": "afterDelay",
-    "files.autoSaveDelay": 1000,
-    "editor.formatOnSave": true,
-    "python.formatting.provider": "black",
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": true
+    // --- 4. 编辑器外观与体验 ---
+    "editor.fontSize": 22,
+    "editor.tabSize": 4,
+    "editor.guides.bracketPairs": true,
+    "editor.rulers": [
+        88,
+        120
+    ], // 88 是 Ruff/Black 标准，120 是宽屏推荐限制
+    "editor.wordWrap": "off",
+    "editor.minimap.enabled": true,
+    "editor.snippetSuggestions": "top",
+    "files.autoSave": "onFocusChange",
+    // --- 5. 文件过滤 (保持侧边栏干净) ---
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/.venv": true, // 隐藏虚拟环境文件夹，搜索时不会搜到库源码
+        "**/.conda": true, // 隐藏虚拟环境文件夹，搜索时不会搜到库源码
+        "**/.env": false // 建议设为 false，因为你可能需要编辑环境变量文件
+    },
+    "search.exclude": {
+        "**/__pycache__": true,
+        "**/.venv": true
+    },
+    // --- 6. 调试与测试 ---
+    "debug.toolBarLocation": "docked",
+    "debug.inlineValues": "on",
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda"
 }
