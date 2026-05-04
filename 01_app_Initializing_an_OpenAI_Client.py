@@ -10,6 +10,7 @@ def initialize_openai_client():
 
     # Initializing the OpenAI client using the API key from Streamlit's secrets
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+    print(client)
 
     # Setting up the OpenAI model in session state if it is not already defined
     if "openai_model" not in st.session_state:
