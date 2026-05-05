@@ -78,7 +78,7 @@ def implement_chat_functionality(client):
                     response = st.write_stream(stream)
                 # Append the assistant's full response to the 'messages' list
                 st.session_state.messages.append(
-                    {"role": "assistant", "content": response}
+                    {"role": "assistant", "content": response}  # type: ignore
                 )
 
             st.session_state.user_message_count += 1
@@ -123,9 +123,9 @@ def build_setup_page():
     )
 
     # Test labels for personal information
-    st.write(f"**Your Name**: {st.session_state["name"]}")
-    st.write(f"**Your Experience**: {st.session_state["experience"]}")
-    st.write(f"**Your Skills**: {st.session_state["skills"]}")
+    st.write(f"**Your Name**: {st.session_state['name']}")
+    st.write(f"**Your Experience**: {st.session_state['experience']}")
+    st.write(f"**Your Skills**: {st.session_state['skills']}")
 
     # Company and Position Section
     st.subheader("Company and Position", divider="rainbow")
@@ -163,7 +163,7 @@ def build_setup_page():
     )
     # Test labels for company and position information
     st.write(
-        f"**Your information**: {st.session_state["level"]} {st.session_state["position"]} at {st.session_state["company"]}"
+        f"**Your information**: {st.session_state['level']} {st.session_state['position']} at {st.session_state['company']}"
     )
 
     # A button to complete the setup stage and start the interview

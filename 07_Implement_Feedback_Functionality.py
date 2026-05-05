@@ -1,6 +1,6 @@
 # Importing necessary libraries
-from openai import OpenAI
 import streamlit as st
+from openai import OpenAI
 from streamlit_js_eval import streamlit_js_eval
 
 
@@ -79,7 +79,7 @@ def implement_chat_functionality(client):
                     response = st.write_stream(stream)
                 # Append the assistant's full response to the 'messages' list
                 st.session_state.messages.append(
-                    {"role": "assistant", "content": response}
+                    {"role": "assistant", "content": response}  # type: ignore
                 )
 
             st.session_state.user_message_count += 1
@@ -124,9 +124,9 @@ def build_setup_page():
     )
 
     # Test labels for personal information
-    st.write(f"**Your Name**: {st.session_state["name"]}")
-    st.write(f"**Your Experience**: {st.session_state["experience"]}")
-    st.write(f"**Your Skills**: {st.session_state["skills"]}")
+    st.write(f"**Your Name**: {st.session_state['name']}")
+    st.write(f"**Your Experience**: {st.session_state['experience']}")
+    st.write(f"**Your Skills**: {st.session_state['skills']}")
 
     # Company and Position Section
     st.subheader("Company and Position", divider="rainbow")
@@ -164,7 +164,7 @@ def build_setup_page():
     )
     # Test labels for company and position information
     st.write(
-        f"**Your information**: {st.session_state["level"]} {st.session_state["position"]} at {st.session_state["company"]}"
+        f"**Your information**: {st.session_state['level']} {st.session_state['position']} at {st.session_state['company']}"
     )
 
     # A button to complete the setup stage and start the interview
@@ -197,7 +197,7 @@ def show_feedback():
 
 
 def feedback():
-    # Show "Get Feedback" 
+    # Show "Get Feedback"
     if st.session_state.chat_complete and not st.session_state.feedback_shown:
         if st.button("Get Feedback", on_click=show_feedback):
             st.write("Fetching feedback...")
@@ -206,7 +206,9 @@ def feedback():
     if st.session_state.feedback_shown:
         st.subheader("Feedback")
 
-        conversation_history = "\n".join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+        conversation_history = "\n".join(
+            [f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages]
+        )
 
         # Initialize new OpenAI client instance for feedback
         feedback_client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
@@ -215,22 +217,29 @@ def feedback():
         feedback_completion = feedback_client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": """You are a helpful tool that provides feedback on an interviewee performance.
+                {
+                    "role": "system",
+                    "content": """You are a helpful tool that provides feedback on an interviewee performance.
                 Before the Feedback give a score of 1 to 10.
                 Follow this format:
                 Overal Score: //Your score
                 Feedback: //Here you put your feedback
                 Give only the feedback do not ask any additional questins.
-                """},
-                {"role": "user", "content": f"This is the interview you need to evaluate. Keep in mind that you are only a tool. And you shouldn't engage in any converstation: {conversation_history}"}
-            ]
+                """,
+                },
+                {
+                    "role": "user",
+                    "content": f"This is the interview you need to evaluate. Keep in mind that you are only a tool. And you shouldn't engage in any converstation: {conversation_history}",
+                },
+            ],
         )
 
         st.write(feedback_completion.choices[0].message.content)
 
         # Button to restart the interview
         if st.button("Restart Interview", type="primary"):
-                streamlit_js_eval(js_expressions="parent.window.location.reload()")
+            streamlit_js_eval(js_expressions="parent.window.location.reload()")
+
 
 initialize_session_state()
 client = initialize_openai_client()
