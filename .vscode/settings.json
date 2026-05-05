@@ -27,7 +27,7 @@
         }
     },
     // --- 4. 编辑器外观与体验 ---
-    "editor.fontSize": 22,
+    "editor.fontSize": 24,
     "editor.tabSize": 4,
     "editor.guides.bracketPairs": true,
     "editor.rulers": [
