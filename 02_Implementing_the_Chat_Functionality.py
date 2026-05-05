@@ -1,6 +1,6 @@
 # Importing necessary libraries
-from openai import OpenAI
 import streamlit as st
+from openai import OpenAI
 
 
 def initialize_openai_client():
@@ -55,7 +55,7 @@ def implement_chat_functionality(client):
             # Display the assistant's response as it streams
             response = st.write_stream(stream)
         # Append the assistant's full response to the 'messages' list
-        st.session_state.messages.append({"role": "assistant", "content": response})
+        st.session_state.messages.append({"role": "assistant", "content": response})  # type: ignore
 
 
 client = initialize_openai_client()
